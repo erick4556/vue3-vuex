@@ -1,0 +1,36 @@
+<template>
+  <h1>Categories</h1>
+  <input type="text" v-model="text" />
+  <button @click="setMessage">Change</button>
+  <p v-show="error">{{ message }}</p>
+  <p>{{ messageReverse }}</p>
+</template>
+
+<script>
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
+export default {
+  setup() {
+    const text = ref("");
+    const store = useStore();
+    console.log(store);
+
+    const setMessage = () => {
+      //mutations
+      // store.commit("setMessage", text.value); //commit para ejecutar la mutacion
+      //actions
+      store.dispatch("setMessageAct", text.value); //dispatch para ejecutar la accion
+    };
+
+    return {
+      text,
+      // message: computed(() => store.state.message), //computed para poder revisar si hay cambios internamente
+      message: computed(() => store.getters.message),
+      messageReverse: computed(() => store.getters.messageReverse),
+      // error: computed(() => store.state.error),
+      error: computed(() => store.getters["error"]),
+      setMessage,
+    };
+  },
+};
+</script>
