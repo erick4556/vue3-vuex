@@ -19,16 +19,19 @@ export default {
       //mutations
       // store.commit("setMessage", text.value); //commit para ejecutar la mutacion
       //actions
-      store.dispatch("setMessageAct", text.value); //dispatch para ejecutar la accion
+      store.dispatch("categories/setMessageAct", text.value); //dispatch para ejecutar la accion del módulo categories
     };
 
     return {
       text,
       // message: computed(() => store.state.message), //computed para poder revisar si hay cambios internamente
-      message: computed(() => store.getters.message),
-      messageReverse: computed(() => store.getters.messageReverse),
+      // Se utiliza el "categories/" para idenfiticar el módulo
+      message: computed(() => store.getters["categories/message"]),
+      messageReverse: computed(
+        () => store.getters["categories/messageReverse"]
+      ),
       // error: computed(() => store.state.error),
-      error: computed(() => store.getters["error"]),
+      error: computed(() => store.getters["categories/error"]),
       setMessage,
     };
   },
