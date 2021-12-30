@@ -1,9 +1,7 @@
 import { createStore, createLogger } from "vuex";
 
-//mutations son funciones que se pueden utilizar para modificar el store
-
 const debug = process.env.NODE_ENV !== "production";
-import categories from "./store/categories";
+import categories from "./modules/categories";
 
 export default createStore({
   modules: { categories }, //Para agregar los módulos
