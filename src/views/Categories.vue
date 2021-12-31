@@ -1,15 +1,19 @@
 <template>
   <h1>Categories</h1>
-  <input type="text" v-model="text" />
-  <button @click="setMessage">Change</button>
   <p v-show="error">{{ message }}</p>
   <p>{{ messageReverse }}</p>
+  <CategoryForm />
 </template>
 
 <script>
 import { computed, ref } from "vue";
 import { useStore } from "vuex";
+import CategoryForm from "../components/category/CategoryForm.vue";
+
 export default {
+  components: {
+    CategoryForm,
+  },
   setup() {
     const text = ref("");
     const store = useStore();
