@@ -1,4 +1,4 @@
-import { initializeApp } from "firebase";
+import { initializeApp } from "firebase/app";
 import {
   API_KEY,
   APP_ID,
