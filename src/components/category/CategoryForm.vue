@@ -51,6 +51,7 @@
       </div>
     </div>
   </form>
+  <p v-show="loading">Cargando...</p>
 </template>
 
 <script>
@@ -65,6 +66,8 @@ export default {
       description: "",
       gasto: false,
     });
+
+    const loading = computed(() => store.getters["category/loading"]);
 
     const category = computed(() => {
       return store.getters["categories/category"];
@@ -93,6 +96,7 @@ export default {
 
     return {
       categoryForm,
+      loading,
       submit,
     };
   },

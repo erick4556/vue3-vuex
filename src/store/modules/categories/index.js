@@ -5,6 +5,7 @@ import mutations from "./categories_mutations";
 const state = () => {
   return {
     categories: [],
+    loading: false,
     error: false,
     message: "",
     category: null,

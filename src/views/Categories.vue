@@ -17,7 +17,6 @@ export default {
   setup() {
     const text = ref("");
     const store = useStore();
-    console.log(store);
 
     const setMessage = () => {
       //mutations
