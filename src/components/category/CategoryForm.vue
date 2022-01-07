@@ -6,7 +6,7 @@
         type="text"
         class="input"
         placeholder="Título"
-        v-model="categoryForm.title"
+        v-model="category.title"
       />
     </div>
     <div class="field">
@@ -15,7 +15,7 @@
         <textarea
           class="textarea"
           placeholder="Agregar tu descripción"
-          v-model="categoryForm.description"
+          v-model="category.description"
         />
       </div>
     </div>
@@ -27,7 +27,7 @@
             type="radio"
             name="gasto"
             value="true"
-            v-model="categoryForm.gasto"
+            v-model="category.gasto"
           />
           Gasto
         </label>
@@ -36,7 +36,7 @@
             type="radio"
             name="gasto"
             value="false"
-            v-model="categoryForm.gasto"
+            v-model="category.gasto"
           />
           Ingreso
         </label>
@@ -51,53 +51,29 @@
       </div>
     </div>
   </form>
-  <p v-show="loading">Cargando...</p>
+  <p v-show="isLoading">Cargando...</p>
 </template>
 
 <script>
-import { reactive, watch, computed } from "vue";
-import { useStore } from "vuex";
+import { toRefs } from "vue";
 export default {
-  setup() {
-    const store = useStore();
-    //reactive para manejar objetos
-    const categoryForm = reactive({
-      title: "",
-      description: "",
-      gasto: false,
-    });
-
-    const loading = computed(() => store.getters["category/loading"]);
-
-    const category = computed(() => {
-      return store.getters["categories/category"];
-    });
-
-    const createCategory = (category) => {
-      store.dispatch("categories/addCategory", category);
-    };
-
-    const submit = (event) => {
-      event.preventDefault(); //Evita que se recargue la página al hacer submit
-      if (categoryForm.title !== "" && categoryForm.description !== "") {
-        createCategory(categoryForm);
-      } else {
-        alert("Todos los campos son obligatorios");
-      }
-    };
-
-    //Para escuchar algun cambio
-    watch(category, (newValue, oldValue) => {
-      if (oldValue && oldValue !== newValue) {
-        console.log("Old created:", oldValue);
-        console.log("Created:", newValue);
-      }
-    });
+  props: {
+    //Props con validaciones
+    categoryForm: {
+      title: String,
+      description: String,
+      gasto: Boolean,
+    },
+    handleSubmit: Function,
+    loading: Boolean,
+  },
+  setup(props) {
+    const { categoryForm, handleSubmit, loading } = toRefs(props); //toRefs permite convertir propiedades a valores reactivos
 
     return {
-      categoryForm,
-      loading,
-      submit,
+      category: categoryForm,
+      isLoading: loading,
+      submit: handleSubmit,
     };
   },
 };

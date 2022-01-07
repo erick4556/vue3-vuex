@@ -3,6 +3,9 @@ import {
   CREATE_CATEGORY_ERROR,
   CREATE_CATEGORY_REQUEST,
   CREATE_CATEGORY_SUCCESS,
+  GET_CATEGORIES_REQUEST,
+  GET_CATEGORIES_SUCCESS,
+  GET_CATEGORIES_ERROR,
 } from "./categories.type";
 
 const setMessageAct = ({ commit }, message) => {
@@ -21,7 +24,19 @@ const addCategory = async ({ commit }, category) => {
   }
 };
 
+const getCategories = async ({ commit }) => {
+  try {
+    commit(GET_CATEGORIES_REQUEST);
+    const categories = await CategoryService.getCategories();
+    commit(GET_CATEGORIES_SUCCESS, categories);
+  } catch (error) {
+    console.log(error);
+    commit(GET_CATEGORIES_ERROR, error);
+  }
+};
+
 export default {
   setMessageAct,
   addCategory,
+  getCategories,
 };
