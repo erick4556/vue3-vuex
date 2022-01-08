@@ -1,22 +1,35 @@
 <template>
-  <h1>Categories</h1>
+  <h1 class="title">Categories</h1>
   <p v-show="error">{{ message }}</p>
-  <p>{{ messageReverse }}</p>
-  <CategoryForm
-    :categoryForm="categoryForm"
-    :handleSubmit="submit"
-    :loading="loading"
-  />
+  <div class="block is-flex is-justify-content-start">
+    <button class="button is-primary" @click="toggleCreateSection">
+      Crear Nuevo
+    </button>
+  </div>
+  <div class="box" v-show="isCreateActive">
+    <h2 class="subtitle is-4">Crear nueva categoría</h2>
+    <CategoryForm
+      :categoryForm="categoryForm"
+      :handleSubmit="submit"
+      :loading="loading"
+    />
+  </div>
+  <div class="block">
+    <h2 class="subtitle is-4">Lista de Categorías</h2>
+    <CategoryList :categoryList="categories" />
+  </div>
 </template>
 
 <script>
-import { computed, ref, reactive, watch } from "vue";
+import { computed, ref, reactive, watch, onMounted } from "vue";
 import { useStore } from "vuex";
 import CategoryForm from "../components/category/CategoryForm.vue";
+import CategoryList from "../components/category/CategoryList.vue";
 
 export default {
   components: {
     CategoryForm,
+    CategoryList,
   },
   setup() {
     const text = ref("");
@@ -29,6 +42,13 @@ export default {
       gasto: false,
     });
 
+    const isCreateActive = ref(false);
+
+    //Métodos del ciclo de vida de un componente
+    onMounted(() => {
+      getCategories();
+    });
+
     //computed properties
     const loading = computed(() => store.getters["category/loading"]);
 
@@ -36,9 +56,17 @@ export default {
       return store.getters["categories/category"];
     });
 
+    const categories = computed(() => {
+      return store.getters["categories/categories"];
+    });
+
     // dispatch para ejecutar actions
     const createCategory = (category) => {
       store.dispatch("categories/addCategory", category);
+    };
+
+    const getCategories = () => {
+      store.dispatch("categories/getCategories");
     };
 
     // métodos del componente
@@ -49,6 +77,10 @@ export default {
       } else {
         alert("Todos los campos son obligatorios");
       }
+    };
+
+    const toggleCreateSection = () => {
+      isCreateActive.value = !isCreateActive.value;
     };
 
     //watch para escuchar algun cambio en valores específicos
@@ -68,8 +100,11 @@ export default {
 
     return {
       submit,
+      toggleCreateSection,
       loading,
       categoryForm,
+      categories,
+      isCreateActive,
       text,
       // message: computed(() => store.state.message), //computed para poder revisar si hay cambios internamente
       // Se utiliza el "categories/" para idenfiticar el módulo
