@@ -6,7 +6,7 @@ import {
   GET_CATEGORIES_REQUEST,
   GET_CATEGORIES_SUCCESS,
   GET_CATEGORIES_ERROR,
-} from "./categories.type";
+} from "./categories_types";
 
 const setMessageAct = ({ commit }, message) => {
   commit("setMessage", message);
