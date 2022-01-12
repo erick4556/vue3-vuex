@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Home from "../views/Home.vue";
 import Categories from "../views/Category.vue";
+import TransactionForm from "../components/transactions/TransactionForm.vue";
 
 const routes = [
   {
@@ -12,6 +13,11 @@ const routes = [
     path: "/categories",
     name: "Categories",
     component: Categories,
+  },
+  {
+    path: "/transactions",
+    name: "Transactions",
+    component: TransactionForm,
   },
   {
     path: "/about",

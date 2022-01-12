@@ -1,5 +1,6 @@
 import mutations from "./transactions_mutations";
 import actions from "./transactions_actions";
+import getters from "./transactions_getters";
 
 const state = () => {
   return {
@@ -16,4 +17,5 @@ export default {
   state,
   mutations,
   actions,
+  getters,
 };

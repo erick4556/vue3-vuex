@@ -65,13 +65,15 @@
 </template>
 
 <script>
-import { computed, onMounted, reactive } from "vue";
+import { computed, onMounted, reactive, watch } from "vue";
 import { useStore } from "vuex";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 export default {
   setup() {
+    //Variables
     const store = useStore();
-    const route = useRoute();
+    const route = useRoute(); //Para acceder a las propiedades de la ruta
+    const router = useRouter(); //Para acceder a las propiedades o funciones del router
     const transactionForm = reactive({
       amount: null,
       description: "",
@@ -80,21 +82,40 @@ export default {
       category: "",
     });
 
+    //Computed properties
     const categories = computed(() => store.getters["categories/categories"]);
 
+    const transactionId = computed(
+      () => store.getters["transactions/transaction"]
+    );
+
+    //Métodos del ciclo de vida
     onMounted(() => {
       store.dispatch("categories/getCategories");
     });
 
+    //Métodos
     const createTransaction = () => {
       store.dispatch("transactions/createTransaction", transactionForm);
     };
 
     const handleSubmit = () => {
-      createTransaction();
+      if (transactionForm.description && transactionForm.amount !== 0) {
+        createTransaction();
+      } else {
+        alert("Llene todos los campos");
+      }
     };
 
+    //watch
+    watch(transactionId, (newValue, oldValue) => {
+      if (oldValue !== undefined && oldValue !== newValue) {
+        router.push("/");
+      }
+    });
+
     return {
+      transactionId,
       isGasto: route.query.isGasto ? true : false,
       transactionForm,
       categories,
