@@ -6,7 +6,15 @@
         Saldo: <span class="has-text-primary">{{ saldo }}</span>
       </h1>
     </div>
-    <TransactionTable />
+    <div class="block">
+      <h2 class="title is-4">Total de transacciones</h2>
+      <Chart id="pieChart" :data="pieData" />
+    </div>
+    <div class="block">
+      <h2 class="title is-4">Reporte de transacciones</h2>
+      <Chart id="barChart" :data="barData" />
+    </div>
+    <TransactionTable :transactions="transactions" />
   </div>
 </template>
 
@@ -16,12 +24,14 @@ import { onMounted, computed } from "vue";
 import { useStore } from "vuex";
 import TransactionTable from "../components/transactions/TransactionTable.vue";
 import TransactionButtons from "../components/transactions/TransactionButtons.vue";
+import Chart from "../shared/components/Chart.vue";
 
 export default {
   name: "Home",
   components: {
     TransactionTable,
     TransactionButtons,
+    Chart,
   },
   setup() {
     const store = useStore();
@@ -29,6 +39,30 @@ export default {
     // computed properties
     const saldo = computed(() => {
       return store.getters["transactions/saldo"];
+    });
+
+    const pieData = computed(() => {
+      return {
+        type: "pie",
+        columns: [
+          ["Ingresos", store.getters["transactions/totalIngresos"]],
+          ["Gastos", store.getters["transactions/totalGastos"]],
+        ],
+      };
+    });
+
+    const barData = computed(() => {
+      return {
+        type: "bar",
+        columns: [
+          ["Ingresos", ...store.getters["transactions/ingresos"]],
+          ["Gastos", ...store.getters["transactions/gastos"]],
+        ],
+      };
+    });
+
+    const transactions = computed(() => {
+      return store.getters["transactions/transactions"];
     });
 
     onMounted(() => {
@@ -41,6 +75,9 @@ export default {
 
     return {
       saldo,
+      pieData,
+      barData,
+      transactions,
     };
   },
 };

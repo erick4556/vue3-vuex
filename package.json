@@ -10,6 +10,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",
     "bulma": "^0.9.3",
+    "c3": "^0.7.20",
     "core-js": "^3.6.5",
     "firebase": "^9.6.1",
     "vue": "^3.2.26",
