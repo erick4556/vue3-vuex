@@ -22,12 +22,12 @@
 // @ is an alias to /src
 import { onMounted, computed } from "vue";
 import { useStore } from "vuex";
-import TransactionTable from "../components/transactions/TransactionTable.vue";
-import TransactionButtons from "../components/transactions/TransactionButtons.vue";
-import Chart from "../shared/components/Chart.vue";
+import TransactionTable from "./TransactionTable.vue";
+import TransactionButtons from "./TransactionButtons.vue";
+import Chart from "../../shared/components/Chart.vue";
 
 export default {
-  name: "Home",
+  name: "Transaction",
   components: {
     TransactionTable,
     TransactionButtons,
